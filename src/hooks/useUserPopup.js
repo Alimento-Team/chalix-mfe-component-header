@@ -8,7 +8,7 @@
  */
 
 import { useState, useCallback, useEffect } from 'react';
-import { getAuthenticatedAPIClient } from '@edx/frontend-platform/auth';
+import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 import { getConfig } from '@edx/frontend-platform';
 
 /**
@@ -37,7 +37,7 @@ const useUserPopup = (options = {}) => {
       setIsLoading(true);
       setError(null);
 
-      const client = getAuthenticatedAPIClient();
+  const client = getAuthenticatedHttpClient();
       
       // Try multiple endpoints for user data
       const endpoints = [
@@ -129,7 +129,7 @@ const useUserPopup = (options = {}) => {
   // Handle logout with CMS/LMS compatible flow
   const handleLogout = useCallback(async () => {
     try {
-      const client = getAuthenticatedAPIClient();
+  const client = getAuthenticatedHttpClient();
       const config = getConfig();
       
       // Try to call logout endpoint
