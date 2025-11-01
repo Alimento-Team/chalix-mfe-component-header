@@ -1,17 +1,24 @@
 {
   "name": "@chalix/frontend-component-header",
   "version": "1.0.0",
-  "description": "The standard header for Open edX",
+  "description": "The standard header for Open edX with Chalix branding and user popup",
   "main": "index.js",
+  "module": "src/index.js",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com",
     "@alimento-team:registry": "https://npm.pkg.github.com",
     "access": "public"
   },
-  "scripts": {},
+  "scripts": {
+    "build": "echo 'Build step - compile if needed'",
+    "prepare": "echo 'Prepare step for npm install'",
+    "test": "echo 'No tests specified'"
+  },
   "files": [
     "/dist",
-    "index.js"
+    "/src",
+    "index.js",
+    "README.md"
   ],
   "repository": {
     "type": "git",

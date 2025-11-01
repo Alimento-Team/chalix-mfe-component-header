@@ -16,7 +16,7 @@ import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import UserPopup from './UserPopup/UserPopup';
-import useUserPopup from './hooks/useUserPopup';
+import useUserPopup from '../hooks/useUserPopup';
 import './ChalixHeaderWithUserPopup.scss';
 
 /**
