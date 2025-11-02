@@ -19,7 +19,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faUser, 
   faBell, 
-  faHouse, 
+  faHome, 
   faList, 
   faGraduationCap, 
   faUserCircle,
@@ -174,7 +174,7 @@ const ChalixHeaderWithUserPopup = ({
               onClick={() => handleNavClick('home')}
               aria-label="Trang chủ"
             >
-              <FontAwesomeIcon icon={faHouse} className="nav-item__icon" />
+              <FontAwesomeIcon icon={faHome} className="nav-item__icon" />
               <span className="nav-item__label">Trang chủ</span>
             </button>
             
