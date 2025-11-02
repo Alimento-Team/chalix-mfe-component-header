@@ -1,20 +1,30 @@
 /**
  * ChalixHeaderWithUserPopup Component
  * 
- * Enhanced Chalix header component that integrates the user popup menu.
- * This component wraps the base header and adds user popup functionality.
+ * Vietnamese LMS header component matching Figma design.
+ * Features:
+ * - Top blue section with organization title and user menu
+ * - Bottom navigation with tabs (Home, Category, Learning, Personalize) and search
  * 
  * Usage:
  * <ChalixHeaderWithUserPopup 
- *   platformName="LMS"
- *   searchPlaceholder="Search courses..."
+ *   organizationName="CỤC HÀNG HẢI VÀ ĐƯỜNG THỦY NỘI ĐỊA VIỆT NAM"
+ *   searchPlaceholder="Nhập từ khóa tìm kiếm"
  * />
  */
 
-import React, { useState, useRef } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { 
+  faUser, 
+  faBell, 
+  faHouse, 
+  faList, 
+  faGraduationCap, 
+  faUserCircle,
+  faSearch 
+} from '@fortawesome/free-solid-svg-icons';
 import UserPopup from './UserPopup/UserPopup';
 import useUserPopup from '../hooks/useUserPopup';
 import './ChalixHeaderWithUserPopup.scss';
@@ -61,21 +71,23 @@ UserAvatarButton.defaultProps = {
 };
 
 /**
- * Enhanced header component with user popup
+ * Enhanced header component with Vietnamese design
  */
 const ChalixHeaderWithUserPopup = ({
-  platformName,
+  organizationTitle,
+  organizationName,
+  organizationLabel,
   searchPlaceholder,
   baseApiUrl,
   logoutUrl,
   onUserMenuItemClick,
   onUserLogout,
+  onNavigate,
 }) => {
   const userPopup = useUserPopup({
     baseApiUrl,
     logoutUrl,
   });
-  const popupContainerRef = useRef(null);
 
   const handleMenuItemClick = (item) => {
     if (onUserMenuItemClick) {
@@ -91,73 +103,159 @@ const ChalixHeaderWithUserPopup = ({
     userPopup.handleLogout();
   };
 
+  const handleNavClick = (tab) => {
+    if (onNavigate) {
+      onNavigate(tab);
+    }
+  };
+
   return (
-    <header className="chalix-header-with-popup">
-      {/* Logo and platform name */}
-      <div className="chalix-header-with-popup__brand">
-        <h1 className="chalix-header-with-popup__title">
-          {platformName}
-        </h1>
+    <header className="chalix-header-vietnamese">
+      {/* Top Blue Header */}
+      <div className="chalix-header-vietnamese__top">
+        <div className="chalix-header-vietnamese__top-content">
+          <div className="organization-info">
+            <h1 className="organization-info__title">{organizationTitle}</h1>
+            <h2 className="organization-info__subtitle">{organizationName}</h2>
+          </div>
+          
+          <div className="header-actions">
+            <button 
+              className="header-actions__notification"
+              aria-label="Thông báo"
+              title="Thông báo"
+            >
+              <FontAwesomeIcon icon={faBell} />
+            </button>
+            
+            <div className="header-actions__user">
+              <button
+                type="button"
+                className="user-dropdown-button"
+                onClick={userPopup.togglePopup}
+                aria-label="User menu"
+              >
+                <span className="user-dropdown-button__name">
+                  {userPopup.userData?.username?.toUpperCase() || 'USER'}
+                </span>
+                <UserAvatarButton
+                  userData={userPopup.userData}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    userPopup.togglePopup();
+                  }}
+                  isLoading={userPopup.isLoading}
+                />
+              </button>
+              
+              <UserPopup
+                isOpen={userPopup.isOpen}
+                onClose={userPopup.closePopup}
+                onMenuItemClick={handleMenuItemClick}
+                username={userPopup.userData?.username}
+                fullName={userPopup.userData?.full_name}
+                profileImageUrl={userPopup.userData?.profile_image_url}
+                accountType={userPopup.userData?.account_type}
+                role={userPopup.userData?.role}
+                isLoading={userPopup.isLoading}
+                onLogout={handleLogout}
+              />
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* Search bar placeholder */}
-      <div className="chalix-header-with-popup__search">
-        <input
-          type="text"
-          className="chalix-header-with-popup__search-input"
-          placeholder={searchPlaceholder}
-          aria-label="Search"
-        />
-      </div>
+      {/* Bottom Navigation */}
+      <div className="chalix-header-vietnamese__bottom">
+        <div className="chalix-header-vietnamese__bottom-content">
+          <nav className="main-navigation" aria-label="Main navigation">
+            <button 
+              className="nav-item"
+              onClick={() => handleNavClick('home')}
+              aria-label="Trang chủ"
+            >
+              <FontAwesomeIcon icon={faHouse} className="nav-item__icon" />
+              <span className="nav-item__label">Trang chủ</span>
+            </button>
+            
+            <button 
+              className="nav-item"
+              onClick={() => handleNavClick('category')}
+              aria-label="Danh mục"
+            >
+              <FontAwesomeIcon icon={faList} className="nav-item__icon" />
+              <span className="nav-item__label">Danh mục</span>
+            </button>
+            
+            <button 
+              className="nav-item"
+              onClick={() => handleNavClick('learning')}
+              aria-label="Học tập"
+            >
+              <FontAwesomeIcon icon={faGraduationCap} className="nav-item__icon" />
+              <span className="nav-item__label">Học tập</span>
+            </button>
+            
+            <button 
+              className="nav-item"
+              onClick={() => handleNavClick('personalize')}
+              aria-label="Cá nhân hóa"
+            >
+              <FontAwesomeIcon icon={faUserCircle} className="nav-item__icon" />
+              <span className="nav-item__label">Cá nhân hóa</span>
+            </button>
+          </nav>
 
-      {/* User menu section */}
-      <div 
-        className="chalix-header-with-popup__user-section"
-        ref={popupContainerRef}
-      >
-        <UserAvatarButton
-          userData={userPopup.userData}
-          onClick={userPopup.togglePopup}
-          isLoading={userPopup.isLoading}
-        />
-        
-        <UserPopup
-          isOpen={userPopup.isOpen}
-          onClose={userPopup.closePopup}
-          onMenuItemClick={handleMenuItemClick}
-          username={userPopup.userData?.username}
-          fullName={userPopup.userData?.full_name}
-          profileImageUrl={userPopup.userData?.profile_image_url}
-          isLoading={userPopup.isLoading}
-          onLogout={handleLogout}
-        />
+          <div className="search-container">
+            <div className="search-bar">
+              <input
+                type="text"
+                className="search-bar__input"
+                placeholder={searchPlaceholder}
+                aria-label="Tìm kiếm"
+              />
+              <button className="search-bar__button" aria-label="Tìm kiếm">
+                <FontAwesomeIcon icon={faSearch} />
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </header>
   );
 };
 
 ChalixHeaderWithUserPopup.propTypes = {
-  /** Name of the platform (e.g., "LMS", "CMS") */
-  platformName: PropTypes.string,
+  /** Organization title (top line) */
+  organizationTitle: PropTypes.string,
+  /** Organization name (subtitle) */
+  organizationName: PropTypes.string,
+  /** Organization label (e.g., "Cơ Quan 1") */
+  organizationLabel: PropTypes.string,
   /** Placeholder text for search input */
   searchPlaceholder: PropTypes.string,
-  /** Base API URL for user data (default: '/api/user/v1') */
+  /** Base API URL for user data */
   baseApiUrl: PropTypes.string,
-  /** URL to redirect to on logout (default: '/logout') */
+  /** URL to redirect to on logout */
   logoutUrl: PropTypes.string,
   /** Callback when user menu item is clicked */
   onUserMenuItemClick: PropTypes.func,
   /** Callback when user logs out */
   onUserLogout: PropTypes.func,
+  /** Callback when navigation item is clicked */
+  onNavigate: PropTypes.func,
 };
 
 ChalixHeaderWithUserPopup.defaultProps = {
-  platformName: 'Chalix',
-  searchPlaceholder: 'Search...',
+  organizationTitle: 'PHẦN MỀM HỌC TẬP THÔNG MINH DÀNH CHO CÔNG CHỨC, VIÊN CHỨC',
+  organizationName: 'CỤC HÀNG HẢI VÀ ĐƯỜNG THỦY NỘI ĐỊA VIỆT NAM',
+  organizationLabel: 'Cơ Quan 1',
+  searchPlaceholder: 'Nhập từ khóa tìm kiếm',
   baseApiUrl: '/api/user/v1',
   logoutUrl: '/logout',
   onUserMenuItemClick: null,
   onUserLogout: null,
+  onNavigate: null,
 };
 
 export default ChalixHeaderWithUserPopup;

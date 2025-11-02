@@ -37,6 +37,8 @@ const UserPopup = ({
   username,
   fullName,
   profileImageUrl,
+  accountType,
+  role,
   isLoading,
   onLogout,
 }) => {
@@ -157,8 +159,22 @@ const UserPopup = ({
           )}
         </div>
         <div className="user-popup__info">
-          <div className="user-popup__name">{fullName || username}</div>
-          {username && <div className="user-popup__username">@{username}</div>}
+          <div className="user-popup__name">{username?.toUpperCase() || 'USER'}</div>
+          <div className="user-popup__details">
+            {username && <span>{username}</span>}
+            {accountType && (
+              <>
+                <span> - </span>
+                <span>{accountType}</span>
+              </>
+            )}
+            {role && (
+              <>
+                <span> - </span>
+                <span>{role}</span>
+              </>
+            )}
+          </div>
         </div>
       </div>
 
@@ -210,6 +226,10 @@ UserPopup.propTypes = {
   fullName: PropTypes.string,
   /** URL to user's profile image */
   profileImageUrl: PropTypes.string,
+  /** Account type (e.g., "Tài khoản Bộ") */
+  accountType: PropTypes.string,
+  /** User role (e.g., "None", "Admin") */
+  role: PropTypes.string,
   /** Whether data is currently loading */
   isLoading: PropTypes.bool,
   /** Callback when logout is clicked */
@@ -221,6 +241,8 @@ UserPopup.defaultProps = {
   username: null,
   fullName: null,
   profileImageUrl: null,
+  accountType: null,
+  role: null,
   isLoading: false,
   onLogout: null,
 };

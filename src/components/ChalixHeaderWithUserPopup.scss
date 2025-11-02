@@ -1,86 +1,283 @@
 /**
- * ChalixHeaderWithUserPopup Styles
+ * ChalixHeaderWithUserPopup Styles - Vietnamese Design
  * 
- * Styling for the enhanced header component with user popup integration.
+ * Two-tier header design:
+ * - Top: Blue section with organization info and user menu
+ * - Bottom: White navigation bar with tabs and search
  */
 
-$header-height: 60px;
-$header-bg-color: #0066cc;
-$header-border-color: #0052a3;
-$header-text-color: #ffffff;
+// Color variables
+$header-top-bg: #3494c8;
+$header-bottom-bg: #ffffff;
+$header-text-white: #ffffff;
+$header-text-dark: #1f2937;
+$header-border: #e5e7eb;
+$nav-hover-bg: #f3f4f6;
+$search-border: #d1d5db;
 
-.chalix-header-with-popup {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: $header-height;
-    background-color: $header-bg-color;
-    border-bottom: 1px solid $header-border-color;
-    padding: 0 16px;
-    gap: 16px;
-    position: relative;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+/**
+ * Main header container
+ */
+.chalix-header-vietnamese {
+    width: 100%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: white;
 
     /**
-   * Brand section (logo and title)
+   * Top blue section
    */
-    &__brand {
+    &__top {
+        background-color: $header-top-bg;
+        color: $header-text-white;
+        padding: 12px 24px;
+    }
+
+    &__top-content {
+        max-width: 1400px;
+        margin: 0 auto;
         display: flex;
         align-items: center;
-        gap: 8px;
-        flex-shrink: 0;
+        justify-content: space-between;
+        gap: 24px;
     }
+
+    /**
+   * Bottom navigation section
+   */
+    &__bottom {
+        background-color: $header-bottom-bg;
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 8px 24px;
+    }
+
+    &__bottom-content {
+        max-width: 1400px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+    }
+}
+
+/**
+ * Organization info section
+ */
+.organization-info {
+    flex: 1;
+    min-width: 0;
 
     &__title {
         margin: 0;
-        font-size: 18px;
+        font-size: 16px;
         font-weight: 700;
-        color: $header-text-color;
+        line-height: 1.3;
+        color: $header-text-white;
+        text-transform: uppercase;
         letter-spacing: 0.5px;
     }
 
-    /**
-   * Search section
-   */
-    &__search {
-        flex: 1;
-        min-width: 200px;
-        max-width: 500px;
+    &__subtitle {
+        margin: 4px 0 0;
+        font-size: 13px;
+        font-weight: 600;
+        line-height: 1.3;
+        color: rgba(255, 255, 255, 0.95);
+        text-transform: uppercase;
     }
+}
 
-    &__search-input {
-        width: 100%;
-        padding: 8px 12px;
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        border-radius: 4px;
+/**
+ * Header actions (notification, user menu)
+ */
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+
+    &__notification {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border: none;
+        border-radius: 50%;
         background-color: rgba(255, 255, 255, 0.1);
-        color: $header-text-color;
-        font-size: 14px;
+        color: $header-text-white;
+        cursor: pointer;
         transition: all 0.2s ease;
+        font-size: 18px;
 
-        &::placeholder {
-            color: rgba(255, 255, 255, 0.6);
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.2);
         }
 
         &:focus {
             outline: none;
-            background-color: rgba(255, 255, 255, 0.2);
-            border-color: rgba(255, 255, 255, 0.6);
-            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
         }
     }
 
-    /**
-   * User section (avatar and popup)
-   */
-    &__user-section {
-        display: flex;
-        align-items: center;
+    &__user {
         position: relative;
-        flex-shrink: 0;
     }
 }
 
+/**
+ * User dropdown button (username + avatar)
+ */
+.user-dropdown-button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 12px 6px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: $header-text-white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+        border-color: rgba(255, 255, 255, 0.5);
+    }
+
+    &:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+    }
+
+    &__name {
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        white-space: nowrap;
+    }
+}
+
+/**
+ * Main navigation tabs
+ */
+.main-navigation {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 6px;
+    background-color: transparent;
+    color: $header-text-dark;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+
+    &__icon {
+        font-size: 18px;
+        color: $header-text-dark;
+    }
+
+    &__label {
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    &:hover {
+        background-color: $nav-hover-bg;
+        color: $header-top-bg;
+
+        .nav-item__icon {
+            color: $header-top-bg;
+        }
+    }
+
+    &:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(52, 148, 200, 0.3);
+    }
+
+    &:active {
+        background-color: darken($nav-hover-bg, 5%);
+    }
+}
+
+/**
+ * Search container
+ */
+.search-container {
+    flex-shrink: 0;
+    min-width: 280px;
+    max-width: 400px;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    border: 1px solid $search-border;
+    border-radius: 6px;
+    background-color: white;
+    overflow: hidden;
+    transition: all 0.2s ease;
+
+    &:focus-within {
+        border-color: $header-top-bg;
+        box-shadow: 0 0 0 3px rgba(52, 148, 200, 0.1);
+    }
+
+    &__input {
+        flex: 1;
+        padding: 10px 12px;
+        border: none;
+        background: transparent;
+        color: $header-text-dark;
+        font-size: 14px;
+        outline: none;
+
+        &::placeholder {
+            color: #9ca3af;
+        }
+    }
+
+    &__button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        border: none;
+        background-color: $header-top-bg;
+        color: white;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-size: 16px;
+
+        &:hover {
+            background-color: darken($header-top-bg, 5%);
+        }
+
+        &:focus {
+            outline: none;
+            box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.3);
+        }
+    }
+}
+
+/**
+ * User avatar button
+ */
 /**
  * User avatar button
  */
@@ -132,6 +329,201 @@ $header-text-color: #ffffff;
         border-top-color: white;
         border-radius: 50%;
         animation: spin 0.8s linear infinite;
+    }
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/**
+ * Responsive design
+ */
+@media (max-width: 1024px) {
+    .chalix-header-vietnamese {
+
+        &__top-content,
+        &__bottom-content {
+            padding: 0 16px;
+        }
+    }
+
+    .organization-info {
+        &__title {
+            font-size: 14px;
+        }
+
+        &__subtitle {
+            font-size: 12px;
+        }
+    }
+
+    .search-container {
+        min-width: 200px;
+        max-width: 300px;
+    }
+}
+
+@media (max-width: 768px) {
+    .chalix-header-vietnamese {
+        &__top {
+            padding: 10px 12px;
+        }
+
+        &__bottom {
+            padding: 6px 12px;
+        }
+
+        &__top-content {
+            gap: 12px;
+        }
+
+        &__bottom-content {
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+    }
+
+    .organization-info {
+        &__title {
+            font-size: 13px;
+        }
+
+        &__subtitle {
+            font-size: 11px;
+            margin-top: 2px;
+        }
+    }
+
+    .header-actions {
+        gap: 8px;
+    }
+
+    .user-dropdown-button {
+        padding: 4px 8px 4px 12px;
+
+        &__name {
+            font-size: 13px;
+        }
+    }
+
+    .main-navigation {
+        order: 2;
+        width: 100%;
+        justify-content: space-around;
+        gap: 4px;
+    }
+
+    .nav-item {
+        padding: 8px 12px;
+        flex: 1;
+        justify-content: center;
+
+        &__label {
+            font-size: 12px;
+        }
+
+        &__icon {
+            font-size: 16px;
+        }
+    }
+
+    .search-container {
+        order: 1;
+        flex: 1;
+        min-width: 0;
+        max-width: none;
+    }
+
+    .user-avatar-button {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+
+        &__icon {
+            width: 16px;
+            height: 16px;
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .chalix-header-vietnamese {
+        &__top {
+            padding: 8px;
+        }
+
+        &__bottom {
+            padding: 4px 8px;
+        }
+    }
+
+    .organization-info {
+        &__title {
+            font-size: 11px;
+        }
+
+        &__subtitle {
+            font-size: 10px;
+        }
+    }
+
+    .nav-item {
+        flex-direction: column;
+        padding: 6px 8px;
+        gap: 2px;
+
+        &__label {
+            font-size: 10px;
+        }
+
+        &__icon {
+            font-size: 14px;
+        }
+    }
+
+    .header-actions {
+        gap: 6px;
+
+        &__notification {
+            width: 32px;
+            height: 32px;
+            font-size: 14px;
+        }
+    }
+
+    .user-avatar-button {
+        width: 32px;
+        height: 32px;
+
+        &__icon {
+            width: 14px;
+            height: 14px;
+        }
+    }
+
+    .search-bar {
+        &__input {
+            padding: 8px 10px;
+            font-size: 13px;
+        }
+
+        &__button {
+            width: 38px;
+            height: 38px;
+            font-size: 14px;
+        }
+    }
+}
+
+/**
+ * Print styles
+ */
+@media print {
+    .chalix-header-vietnamese {
+        display: none;
     }
 }
 
