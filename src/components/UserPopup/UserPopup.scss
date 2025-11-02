@@ -7,13 +7,14 @@
 
 $popup-bg-color: #ffffff;
 $popup-border-color: #e0e0e0;
-$popup-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
-$header-bg-color: #0066cc;
-$menu-hover-bg: #f5f5f5;
+$popup-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+$header-bg-color: #f5f5f5;
+$menu-hover-bg: rgba(51, 133, 255, 0.1);
 $text-primary: #333333;
 $text-secondary: #666666;
-$logout-bg-color: #dc3545;
-$logout-hover-bg: #c82333;
+$primary-blue: #3385ff;
+$logout-color: #dc3545;
+$logout-hover-bg: rgba(220, 53, 69, 0.1);
 
 .user-popup {
     position: absolute;
@@ -48,9 +49,9 @@ $logout-hover-bg: #c82333;
         display: flex;
         align-items: center;
         gap: 12px;
-        padding: 16px;
+        padding: 16px 20px;
         background-color: $header-bg-color;
-        color: white;
+        border-bottom: 1px solid $popup-border-color;
     }
 
     &__avatar-wrapper {
@@ -67,7 +68,7 @@ $logout-hover-bg: #c82333;
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: rgba(255, 255, 255, 0.3);
+            background-color: $primary-blue;
             color: white;
             font-size: 20px;
         }
@@ -86,16 +87,17 @@ $logout-hover-bg: #c82333;
         text-overflow: ellipsis;
         line-height: 1.3;
         letter-spacing: 0.5px;
+        color: $text-primary;
     }
 
     &__details {
         font-size: 11px;
-        opacity: 0.9;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
         line-height: 1.4;
         margin-top: 2px;
+        color: $text-secondary;
     }
 
     /**
@@ -113,18 +115,23 @@ $logout-hover-bg: #c82333;
         display: flex;
         align-items: center;
         gap: 12px;
-        padding: 12px 16px;
+        padding: 16px 20px;
         color: $text-primary;
         text-decoration: none;
         transition: background-color 0.2s ease;
-        font-size: 14px;
+        font-size: 15px;
+        font-weight: 500;
 
         &:hover {
             background-color: $menu-hover-bg;
+            
+            .user-popup__menu-label {
+                color: $primary-blue;
+            }
         }
 
         &:focus {
-            outline: 2px solid $header-bg-color;
+            outline: 2px solid $primary-blue;
             outline-offset: -2px;
         }
     }
@@ -132,7 +139,7 @@ $logout-hover-bg: #c82333;
     &__menu-icon {
         width: 18px;
         flex-shrink: 0;
-        color: #666;
+        color: $text-secondary;
     }
 
     &__menu-label {
@@ -140,6 +147,7 @@ $logout-hover-bg: #c82333;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        transition: color 0.2s ease;
     }
 
     /**
@@ -156,21 +164,21 @@ $logout-hover-bg: #c82333;
         justify-content: flex-start;
         gap: 12px;
         width: 100%;
-        padding: 12px 16px;
+        padding: 16px 20px;
         background-color: transparent;
         border: none;
-        color: $logout-bg-color;
-        font-size: 14px;
+        color: $logout-color;
+        font-size: 15px;
         font-weight: 500;
         cursor: pointer;
         transition: background-color 0.2s ease;
 
         &:hover {
-            background-color: rgba($logout-bg-color, 0.1);
+            background-color: $logout-hover-bg;
         }
 
         &:focus {
-            outline: 2px solid $logout-bg-color;
+            outline: 2px solid $logout-color;
             outline-offset: -2px;
         }
     }
@@ -202,7 +210,16 @@ $logout-hover-bg: #c82333;
         border-color: #333333;
 
         &__header {
-            background-color: #0052a3;
+            background-color: #2d2d2d;
+            border-bottom-color: #333333;
+        }
+        
+        &__name {
+            color: #e0e0e0;
+        }
+        
+        &__details {
+            color: #999999;
         }
 
         &__menu-item {
@@ -210,6 +227,10 @@ $logout-hover-bg: #c82333;
 
             &:hover {
                 background-color: #2d2d2d;
+                
+                .user-popup__menu-label {
+                    color: #5ca5ff;
+                }
             }
         }
 
