@@ -124,7 +124,7 @@ $logout-hover-bg: rgba(220, 53, 69, 0.1);
 
         &:hover {
             background-color: $menu-hover-bg;
-            
+
             .user-popup__menu-label {
                 color: $primary-blue;
             }
@@ -213,11 +213,11 @@ $logout-hover-bg: rgba(220, 53, 69, 0.1);
             background-color: #2d2d2d;
             border-bottom-color: #333333;
         }
-        
+
         &__name {
             color: #e0e0e0;
         }
-        
+
         &__details {
             color: #999999;
         }
@@ -227,7 +227,7 @@ $logout-hover-bg: rgba(220, 53, 69, 0.1);
 
             &:hover {
                 background-color: #2d2d2d;
-                
+
                 .user-popup__menu-label {
                     color: #5ca5ff;
                 }

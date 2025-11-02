@@ -7,6 +7,7 @@
 // Main header components
 export { default as ChalixHeaderWithUserPopup } from './components/ChalixHeaderWithUserPopup.jsx';
 export { default as UserPopup } from './components/UserPopup/UserPopup.jsx';
+export { default as LearningResultsFilter } from './components/LearningResultsFilter/LearningResultsFilter.jsx';
 
 // Hooks
 export { default as useUserPopup } from './hooks/useUserPopup.js';
