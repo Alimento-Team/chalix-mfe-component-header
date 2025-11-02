@@ -1,7 +1,7 @@
 {
   "name": "@chalix/frontend-component-header",
   "version": "1.0.0",
-  "description": "The standard header for Open edX with Chalix branding and user popup",
+  "description": "The standard header for Chalix branding and user popup",
   "type": "module",
   "main": "index.js",
   "module": "index.js",
