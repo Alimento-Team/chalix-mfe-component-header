@@ -32,7 +32,7 @@ import './ChalixHeaderWithUserPopup.scss';
 /**
  * User avatar button component
  */
-const UserAvatarButton = ({ userData, onClick, isLoading }) => {
+const UserAvatarButton = ({ userData = null, onClick, isLoading = false }) => {
   return (
     <button
       type="button"
@@ -65,24 +65,19 @@ UserAvatarButton.propTypes = {
   isLoading: PropTypes.bool,
 };
 
-UserAvatarButton.defaultProps = {
-  userData: null,
-  isLoading: false,
-};
-
 /**
  * Enhanced header component with Vietnamese design
  */
 const ChalixHeaderWithUserPopup = ({
-  organizationTitle,
-  organizationName,
-  organizationLabel,
-  searchPlaceholder,
-  baseApiUrl,
-  logoutUrl,
-  onUserMenuItemClick,
-  onUserLogout,
-  onNavigate,
+  organizationTitle = 'PHẦN MỀM HỌC TẬP THÔNG MINH DÀNH CHO CÔNG CHỨC, VIÊN CHỨC',
+  organizationName = 'CỤC HÀNG HẢI VÀ ĐƯỜNG THỦY NỘI ĐỊA VIỆT NAM',
+  organizationLabel = 'Cơ Quan 1',
+  searchPlaceholder = 'Nhập từ khóa tìm kiếm',
+  baseApiUrl = '/api/user/v1',
+  logoutUrl = '/logout',
+  onUserMenuItemClick = null,
+  onUserLogout = null,
+  onNavigate = null,
 }) => {
   const userPopup = useUserPopup({
     baseApiUrl,
@@ -244,18 +239,6 @@ ChalixHeaderWithUserPopup.propTypes = {
   onUserLogout: PropTypes.func,
   /** Callback when navigation item is clicked */
   onNavigate: PropTypes.func,
-};
-
-ChalixHeaderWithUserPopup.defaultProps = {
-  organizationTitle: 'PHẦN MỀM HỌC TẬP THÔNG MINH DÀNH CHO CÔNG CHỨC, VIÊN CHỨC',
-  organizationName: 'CỤC HÀNG HẢI VÀ ĐƯỜNG THỦY NỘI ĐỊA VIỆT NAM',
-  organizationLabel: 'Cơ Quan 1',
-  searchPlaceholder: 'Nhập từ khóa tìm kiếm',
-  baseApiUrl: '/api/user/v1',
-  logoutUrl: '/logout',
-  onUserMenuItemClick: null,
-  onUserLogout: null,
-  onNavigate: null,
 };
 
 export default ChalixHeaderWithUserPopup;

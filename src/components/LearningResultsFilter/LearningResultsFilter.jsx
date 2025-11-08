@@ -47,9 +47,9 @@ const getYearOptions = () => {
 const LearningResultsFilter = ({
   onStatusChange,
   onYearChange,
-  selectedStatus,
-  selectedYear,
-  className,
+  selectedStatus = 'all',
+  selectedYear = 'all',
+  className = '',
 }) => {
   const yearOptions = getYearOptions();
 
@@ -101,12 +101,6 @@ LearningResultsFilter.propTypes = {
   selectedYear: PropTypes.string,
   /** Additional CSS classes */
   className: PropTypes.string,
-};
-
-LearningResultsFilter.defaultProps = {
-  selectedStatus: 'all',
-  selectedYear: 'all',
-  className: '',
 };
 
 export default LearningResultsFilter;

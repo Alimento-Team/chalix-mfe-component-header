@@ -33,14 +33,14 @@ import './UserPopup.scss';
 const UserPopup = ({
   isOpen,
   onClose,
-  onMenuItemClick,
-  username,
-  fullName,
-  profileImageUrl,
-  accountType,
-  role,
-  isLoading,
-  onLogout,
+  onMenuItemClick = null,
+  username = null,
+  fullName = null,
+  profileImageUrl = null,
+  accountType = null,
+  role = null,
+  isLoading = false,
+  onLogout = null,
 }) => {
   const popupRef = useRef(null);
 
@@ -229,17 +229,6 @@ UserPopup.propTypes = {
   isLoading: PropTypes.bool,
   /** Callback when logout is clicked */
   onLogout: PropTypes.func,
-};
-
-UserPopup.defaultProps = {
-  onMenuItemClick: null,
-  username: null,
-  fullName: null,
-  profileImageUrl: null,
-  accountType: null,
-  role: null,
-  isLoading: false,
-  onLogout: null,
 };
 
 export default UserPopup;
