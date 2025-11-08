@@ -103,12 +103,12 @@ const useUserPopup = (options = {}) => {
     }
   }, [baseApiUrl]);
 
-  // Fetch user data when popup opens
+  // Fetch user data immediately on mount (not when popup opens)
   useEffect(() => {
-    if (isOpen && !userData) {
+    if (!userData) {
       fetchUserData();
     }
-  }, [isOpen, userData, fetchUserData]);
+  }, [userData, fetchUserData]);
 
   // Toggle popup open/closed
   const togglePopup = useCallback(() => {

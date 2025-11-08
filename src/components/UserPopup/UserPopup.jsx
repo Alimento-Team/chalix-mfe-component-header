@@ -68,13 +68,8 @@ const UserPopup = ({
     return null;
   }
 
-  if (isLoading) {
-    return (
-      <div ref={popupRef} className="user-popup user-popup--loading">
-        <div className="user-popup__spinner">Loading...</div>
-      </div>
-    );
-  }
+  // Don't show loading spinner in the popup since data is pre-fetched
+  // If still loading, show the popup with whatever data we have
 
   const menuItems = [
     {
