@@ -7,4 +7,6 @@
 // Export all components from src
 export { default as ChalixHeaderWithUserPopup } from './src/components/ChalixHeaderWithUserPopup.jsx';
 export { default as UserPopup } from './src/components/UserPopup/UserPopup.jsx';
+export { default as NotificationPopup } from './src/components/NotificationPopup/NotificationPopup.jsx';
 export { default as useUserPopup } from './src/hooks/useUserPopup.js';
+export { default as useNotifications } from './src/hooks/useNotifications.js';

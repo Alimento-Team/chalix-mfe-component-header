@@ -26,7 +26,9 @@ import {
   faSearch 
 } from '@fortawesome/free-solid-svg-icons';
 import UserPopup from './UserPopup/UserPopup';
+import NotificationPopup from './NotificationPopup/NotificationPopup';
 import useUserPopup from '../hooks/useUserPopup';
+import useNotifications from '../hooks/useNotifications';
 import './ChalixHeaderWithUserPopup.scss';
 
 /**
@@ -84,6 +86,11 @@ const ChalixHeaderWithUserPopup = ({
     logoutUrl,
   });
 
+  const notifications = useNotifications({
+    autoFetch: true,
+    pollInterval: 60000, // Poll every 60 seconds
+  });
+
   const handleMenuItemClick = (item) => {
     if (onUserMenuItemClick) {
       onUserMenuItemClick(item);
@@ -104,6 +111,21 @@ const ChalixHeaderWithUserPopup = ({
     }
   };
 
+  const handleNotificationClick = (notification) => {
+    // Mark as read
+    notifications.markNotificationsRead(notification.id);
+    
+    // Navigate to content URL if available
+    if (notification.content_url) {
+      window.location.href = notification.content_url;
+    }
+  };
+
+  const handleViewAllNotifications = () => {
+    // Navigate to notifications page
+    window.location.href = '/notifications';
+  };
+
   return (
     <header className="chalix-header-vietnamese">
       {/* Top Blue Header */}
@@ -115,13 +137,30 @@ const ChalixHeaderWithUserPopup = ({
           </div>
           
           <div className="header-actions">
-            <button 
-              className="header-actions__notification"
-              aria-label="Thông báo"
-              title="Thông báo"
-            >
-              <FontAwesomeIcon icon={faBell} />
-            </button>
+            <div className="header-actions__notification-container">
+              <button 
+                className="header-actions__notification"
+                aria-label="Thông báo"
+                title="Thông báo"
+                onClick={notifications.togglePopup}
+              >
+                <FontAwesomeIcon icon={faBell} />
+                {notifications.hasNotifications && (
+                  <span className="header-actions__notification-badge">
+                    {notifications.notificationCount > 99 ? '99+' : notifications.notificationCount}
+                  </span>
+                )}
+              </button>
+              
+              <NotificationPopup
+                isOpen={notifications.isOpen}
+                onClose={notifications.closePopup}
+                notifications={notifications.notifications}
+                isLoading={notifications.isLoading}
+                onNotificationClick={handleNotificationClick}
+                onViewAll={handleViewAllNotifications}
+              />
+            </div>
             
             <div className="header-actions__user">
               <button

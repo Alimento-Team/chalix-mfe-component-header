@@ -37,13 +37,14 @@ const useUserPopup = (options = {}) => {
       setIsLoading(true);
       setError(null);
 
-  const client = getAuthenticatedHttpClient();
+      const client = getAuthenticatedHttpClient();
+      const config = getConfig();
       
       // Try multiple endpoints for user data
       const endpoints = [
-        `${baseApiUrl}/accounts/user_popup/`,      // Primary endpoint (CMS/LMS)
-        `${baseApiUrl}/user_popup/`,               // Alternative endpoint
-        `${baseApiUrl}/accounts/`,                 // Fallback to accounts endpoint
+        `${config.LMS_BASE_URL}/api/user/v1/user_popup/`,      // Primary endpoint
+        `${baseApiUrl}/user_popup/`,                            // Alternative endpoint
+        `${baseApiUrl}/accounts/`,                              // Fallback to accounts endpoint
       ];
 
       let response = null;
@@ -129,7 +130,7 @@ const useUserPopup = (options = {}) => {
   // Handle logout with CMS/LMS compatible flow
   const handleLogout = useCallback(async () => {
     try {
-  const client = getAuthenticatedHttpClient();
+      const client = getAuthenticatedHttpClient();
       const config = getConfig();
       
       // Try to call logout endpoint
