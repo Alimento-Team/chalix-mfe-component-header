@@ -40,11 +40,14 @@ const useUserPopup = (options = {}) => {
       const client = getAuthenticatedHttpClient();
       const config = getConfig();
       
+      // Determine the base URL for API calls
+      const apiBase = config.LMS_BASE_URL || config.BASE_URL || '';
+      
       // Try multiple endpoints for user data
       const endpoints = [
-        `${config.LMS_BASE_URL}/api/user/v1/user_popup/`,      // Primary endpoint
-        `${baseApiUrl}/user_popup/`,                            // Alternative endpoint
-        `${baseApiUrl}/accounts/`,                              // Fallback to accounts endpoint
+        `${apiBase}/api/user/v1/user_popup/`,                   // Primary endpoint
+        `${apiBase}${baseApiUrl}/user_popup/`,                  // Alternative endpoint
+        `${apiBase}/api/user/v1/accounts/${config.USERNAME}/`,  // Fallback to specific user account
       ];
 
       let response = null;
