@@ -15,6 +15,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import { getConfig } from '@edx/frontend-platform';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faUser, 
@@ -111,6 +112,28 @@ const ChalixHeaderWithUserPopup = ({
   const handleNavClick = (tab) => {
     if (onNavigate) {
       onNavigate(tab);
+    } else {
+      // Default navigation behavior if no handler provided
+      const config = getConfig();
+      const baseUrl = config.BASE_URL || config.LMS_BASE_URL || window.location.origin;
+      
+      switch (tab) {
+        case 'home':
+          window.location.href = `${baseUrl}/dashboard`;
+          break;
+        case 'category':
+          // Default: redirect to learner dashboard
+          window.location.href = `${baseUrl}/learner-dashboard`;
+          break;
+        case 'learning':
+          window.location.href = `${baseUrl}/learning`;
+          break;
+        case 'personalize':
+          window.location.href = `${baseUrl}/personalize`;
+          break;
+        default:
+          break;
+      }
     }
   };
 
