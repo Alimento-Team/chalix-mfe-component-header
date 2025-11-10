@@ -92,7 +92,10 @@ const ChalixHeaderWithUserPopup = ({
   });
 
   const handleMenuItemClick = (item) => {
-    if (onUserMenuItemClick) {
+    // If the menu item is "personalize", trigger the navigation handler
+    if (item.id === 'personalize' && onNavigate) {
+      onNavigate('personalize');
+    } else if (onUserMenuItemClick) {
       onUserMenuItemClick(item);
     }
     userPopup.handleMenuItemClick(item);

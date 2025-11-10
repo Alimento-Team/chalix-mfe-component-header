@@ -85,10 +85,10 @@ const UserPopup = ({
       href: '/account/profile',
     },
     {
-      id: 'personalization',
+      id: 'personalize',
       label: 'Cá nhân hóa',
       icon: faCog,
-      href: '/account/preferences',
+      href: '/personalize',
     },
     {
       id: 'requests',
@@ -154,21 +154,9 @@ const UserPopup = ({
           )}
         </div>
         <div className="user-popup__info">
-          <div className="user-popup__name">{username?.toUpperCase() || 'USER'}</div>
+          <div className="user-popup__name">{fullName || username?.toUpperCase() || 'USER'}</div>
           <div className="user-popup__details">
-            {username && <span>{username}</span>}
-            {accountType && (
-              <>
-                <span> - </span>
-                <span>{accountType}</span>
-              </>
-            )}
-            {role && (
-              <>
-                <span> - </span>
-                <span>{role}</span>
-              </>
-            )}
+            {username && <span>@{username}</span>}
           </div>
         </div>
       </div>
