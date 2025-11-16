@@ -124,8 +124,8 @@ const ChalixHeaderWithUserPopup = ({
       // Default navigation behavior if no handler provided
       const config = getConfig();
       const lmsBaseUrl = config.LMS_BASE_URL;
-      const mfeBaseUrl = config.BASE_URL;
-      const learnerDashboardUrl = `${mfeBaseUrl}/learner-dashboard`;
+      // LEARNER_DASHBOARD_URL is already a full URL
+      const learnerDashboardUrl = config.LEARNER_DASHBOARD_URL || `${lmsBaseUrl}/dashboard`;
       
       switch (tab) {
         case 'home':

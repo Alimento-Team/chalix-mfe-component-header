@@ -73,14 +73,18 @@ const UserPopup = ({
   // Get MFE URLs from config
   const config = getConfig();
   const lmsBaseUrl = config.LMS_BASE_URL || (typeof window !== 'undefined' ? window.location.origin : '');
+  
+  // LEARNER_DASHBOARD_URL is already a full URL, don't append to it
   const learnerDashboardUrl = config.LEARNER_DASHBOARD_URL || `${lmsBaseUrl}/dashboard`;
-  const accountSettingsUrl = config.ACCOUNT_SETTINGS_URL || `${lmsBaseUrl}/account`;
-  const accountProfileUrl = config.ACCOUNT_PROFILE_URL || lmsBaseUrl;
+  
+  // ACCOUNT_PROFILE_URL is already a full URL base
+  const accountMfeUrl = config.ACCOUNT_PROFILE_URL || `${lmsBaseUrl}`;
+  const accountSettingsUrl = `${accountMfeUrl}/account`;
   
   // Construct profile URL with username
-  const profileUrl = username && accountProfileUrl 
-    ? `${accountProfileUrl}/u/${username}` 
-    : accountProfileUrl || `${lmsBaseUrl}/account`;
+  const profileUrl = username 
+    ? `${accountMfeUrl}/u/${username}` 
+    : `${accountMfeUrl}/account`;
 
   const urls = {
     courses: learnerDashboardUrl,
