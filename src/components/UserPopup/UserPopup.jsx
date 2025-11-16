@@ -16,10 +16,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faBook,
   faUser,
-  faCog,
   faClipboardList,
   faChartBar,
-  faCalendarAlt,
   faChalkboard,
   faQuestionCircle,
   faSignOutAlt,
@@ -76,19 +74,13 @@ const UserPopup = ({
       id: 'courses',
       label: 'Khóa học',
       icon: faBook,
-      href: '/dashboard',
+      href: '/learner-dashboard',
     },
     {
       id: 'update-info',
       label: 'Cập nhật thông tin',
       icon: faUser,
       href: '/account/profile',
-    },
-    {
-      id: 'personalize',
-      label: 'Cá nhân hóa',
-      icon: faCog,
-      href: '/personalize',
     },
     {
       id: 'requests',
@@ -101,12 +93,6 @@ const UserPopup = ({
       label: 'Kết quả học tập',
       icon: faChartBar,
       href: '/learning-results',
-    },
-    {
-      id: 'personal-plan',
-      label: 'Lập kế hoạch cá nhân',
-      icon: faCalendarAlt,
-      href: '/personal-plan',
     },
     {
       id: 'register-teaching',

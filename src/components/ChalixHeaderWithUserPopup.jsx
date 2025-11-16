@@ -8,7 +8,7 @@
  * 
  * Usage:
  * <ChalixHeaderWithUserPopup 
- *   organizationName="CỤC HÀNG HẢI VÀ ĐƯỜNG THỦY NỘI ĐỊA VIỆT NAM"
+ *   organizationName=
  *   searchPlaceholder="Nhập từ khóa tìm kiếm"
  * />
  */
@@ -73,14 +73,14 @@ UserAvatarButton.propTypes = {
  */
 const ChalixHeaderWithUserPopup = ({
   organizationTitle = 'PHẦN MỀM HỌC TẬP THÔNG MINH DÀNH CHO CÔNG CHỨC, VIÊN CHỨC',
-  organizationName = 'CỤC HÀNG HẢI VÀ ĐƯỜNG THỦY NỘI ĐỊA VIỆT NAM',
-  organizationLabel = 'Cơ Quan 1',
+  organizationName = null, // Will be loaded from user profile
   searchPlaceholder = 'Nhập từ khóa tìm kiếm',
   baseApiUrl = '/api/user/v1',
   logoutUrl = '/logout',
   onUserMenuItemClick = null,
   onUserLogout = null,
   onNavigate = null,
+  hideUserMenu = false,
 }) => {
   const userPopup = useUserPopup({
     baseApiUrl,
@@ -91,6 +91,14 @@ const ChalixHeaderWithUserPopup = ({
     autoFetch: true,
     pollInterval: 60000, // Poll every 60 seconds
   });
+
+  // Get organization name from user data
+  const getOrganizationName = () => {
+    if (organizationName) return organizationName;
+    
+    // Use organization from user profile if available
+    return userPopup.userData?.organization || '';
+  };
 
   const handleMenuItemClick = (item) => {
     // If the menu item is "personalize", trigger the navigation handler
@@ -159,68 +167,74 @@ const ChalixHeaderWithUserPopup = ({
         <div className="chalix-header-vietnamese__top-content">
           <div className="organization-info">
             <h1 className="organization-info__title">{organizationTitle}</h1>
-            <h2 className="organization-info__subtitle">{organizationName}</h2>
+            {getOrganizationName() && (
+              <h2 className="organization-info__subtitle">{getOrganizationName()}</h2>
+            )}
           </div>
           
           <div className="header-actions">
-            <div className="header-actions__notification-container">
-              <button 
-                className="header-actions__notification"
-                aria-label="Thông báo"
-                title="Thông báo"
-                onClick={notifications.togglePopup}
-              >
-                <FontAwesomeIcon icon={faBell} />
-                {notifications.hasNotifications && (
-                  <span className="header-actions__notification-badge">
-                    {notifications.notificationCount > 99 ? '99+' : notifications.notificationCount}
-                  </span>
-                )}
-              </button>
-              
-              <NotificationPopup
-                isOpen={notifications.isOpen}
-                onClose={notifications.closePopup}
-                notifications={notifications.notifications}
-                isLoading={notifications.isLoading}
-                onNotificationClick={handleNotificationClick}
-                onViewAll={handleViewAllNotifications}
-              />
-            </div>
-            
-            <div className="header-actions__user">
-              <button
-                type="button"
-                className="user-dropdown-button"
-                onClick={userPopup.togglePopup}
-                aria-label="User menu"
-              >
-                <span className="user-dropdown-button__name">
-                  {userPopup.userData?.username?.toUpperCase() || 'USER'}
-                </span>
-                <UserAvatarButton
-                  userData={userPopup.userData}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    userPopup.togglePopup();
-                  }}
-                  isLoading={userPopup.isLoading}
-                />
-              </button>
-              
-              <UserPopup
-                isOpen={userPopup.isOpen}
-                onClose={userPopup.closePopup}
-                onMenuItemClick={handleMenuItemClick}
-                username={userPopup.userData?.username}
-                fullName={userPopup.userData?.full_name}
-                profileImageUrl={userPopup.userData?.profile_image_url}
-                accountType={userPopup.userData?.account_type}
-                role={userPopup.userData?.role}
-                isLoading={userPopup.isLoading}
-                onLogout={handleLogout}
-              />
-            </div>
+            {!hideUserMenu && (
+              <>
+                <div className="header-actions__notification-container">
+                  <button 
+                    className="header-actions__notification"
+                    aria-label="Thông báo"
+                    title="Thông báo"
+                    onClick={notifications.togglePopup}
+                  >
+                    <FontAwesomeIcon icon={faBell} />
+                    {notifications.hasNotifications && (
+                      <span className="header-actions__notification-badge">
+                        {notifications.notificationCount > 99 ? '99+' : notifications.notificationCount}
+                      </span>
+                    )}
+                  </button>
+                  
+                  <NotificationPopup
+                    isOpen={notifications.isOpen}
+                    onClose={notifications.closePopup}
+                    notifications={notifications.notifications}
+                    isLoading={notifications.isLoading}
+                    onNotificationClick={handleNotificationClick}
+                    onViewAll={handleViewAllNotifications}
+                  />
+                </div>
+                
+                <div className="header-actions__user">
+                  <button
+                    type="button"
+                    className="user-dropdown-button"
+                    onClick={userPopup.togglePopup}
+                    aria-label="User menu"
+                  >
+                    <span className="user-dropdown-button__name">
+                      {userPopup.userData?.username?.toUpperCase() || 'USER'}
+                    </span>
+                    <UserAvatarButton
+                      userData={userPopup.userData}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        userPopup.togglePopup();
+                      }}
+                      isLoading={userPopup.isLoading}
+                    />
+                  </button>
+                  
+                  <UserPopup
+                    isOpen={userPopup.isOpen}
+                    onClose={userPopup.closePopup}
+                    onMenuItemClick={handleMenuItemClick}
+                    username={userPopup.userData?.username}
+                    fullName={userPopup.userData?.full_name}
+                    profileImageUrl={userPopup.userData?.profile_image_url}
+                    accountType={userPopup.userData?.account_type}
+                    role={userPopup.userData?.role}
+                    isLoading={userPopup.isLoading}
+                    onLogout={handleLogout}
+                  />
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>
@@ -288,10 +302,8 @@ const ChalixHeaderWithUserPopup = ({
 ChalixHeaderWithUserPopup.propTypes = {
   /** Organization title (top line) */
   organizationTitle: PropTypes.string,
-  /** Organization name (subtitle) */
+  /** Organization name - if not provided, will use user's organization from profile */
   organizationName: PropTypes.string,
-  /** Organization label (e.g., "Cơ Quan 1") */
-  organizationLabel: PropTypes.string,
   /** Placeholder text for search input */
   searchPlaceholder: PropTypes.string,
   /** Base API URL for user data */
@@ -304,6 +316,8 @@ ChalixHeaderWithUserPopup.propTypes = {
   onUserLogout: PropTypes.func,
   /** Callback when navigation item is clicked */
   onNavigate: PropTypes.func,
+  /** Hide user menu (for pages like login/register) */
+  hideUserMenu: PropTypes.bool,
 };
 
 export default ChalixHeaderWithUserPopup;
