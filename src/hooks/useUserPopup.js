@@ -68,13 +68,32 @@ const useUserPopup = (options = {}) => {
 
       if (response && response.data) {
         // Normalize the data structure
+        // Extract profile image URL from various possible formats
+        let profileImageUrl = '';
+        if (response.data.profile_image_url) {
+          profileImageUrl = response.data.profile_image_url;
+        } else if (response.data.profile_image) {
+          // profile_image might be an object with image_url_* keys or a direct URL string
+          if (typeof response.data.profile_image === 'string') {
+            profileImageUrl = response.data.profile_image;
+          } else if (response.data.profile_image && response.data.profile_image.image_url_full) {
+            profileImageUrl = response.data.profile_image.image_url_full;
+          } else if (response.data.profile_image && response.data.profile_image.image_url_medium) {
+            profileImageUrl = response.data.profile_image.image_url_medium;
+          }
+        } else if (response.data.image_url_full) {
+          profileImageUrl = response.data.image_url_full;
+        } else if (response.data.image_url_medium) {
+          profileImageUrl = response.data.image_url_medium;
+        } else if (response.data.avatar) {
+          profileImageUrl = response.data.avatar;
+        }
+        
         const normalizedData = {
           username: response.data.username || response.data.user || '',
           full_name: response.data.full_name || response.data.name || response.data.username || '',
           email: response.data.email || '',
-          profile_image_url: response.data.profile_image_url || 
-                            response.data.profile_image || 
-                            response.data.avatar || '',
+          profile_image_url: profileImageUrl,
           is_staff: response.data.is_staff || false,
           is_superuser: response.data.is_superuser || false,
         };
