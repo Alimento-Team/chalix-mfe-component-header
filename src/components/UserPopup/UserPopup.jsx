@@ -74,7 +74,7 @@ const UserPopup = ({
   const config = getConfig();
   const lmsBaseUrl = config.LMS_BASE_URL || (typeof window !== 'undefined' ? window.location.origin : '');
   const learnerDashboardUrl = config.LEARNER_DASHBOARD_URL || `${lmsBaseUrl}/dashboard`;
-  const accountSettingsUrl = config.ACCOUNT_SETTINGS_URL || `${lmsBaseUrl}/account/settings`;
+  const accountSettingsUrl = config.ACCOUNT_SETTINGS_URL || `${lmsBaseUrl}/account`;
   const accountProfileUrl = config.ACCOUNT_PROFILE_URL || lmsBaseUrl;
   
   // Construct profile URL with username
@@ -104,6 +104,12 @@ const UserPopup = ({
       label: 'Cập nhật thông tin',
       icon: faUser,
       href: urls.updateInfo,
+    },
+    {
+      id: 'personalization',
+      label: 'Cá nhân hóa',
+      icon: faUser,
+      href: urls.profile,
     },
     {
       id: 'requests',
