@@ -123,21 +123,27 @@ const ChalixHeaderWithUserPopup = ({
     } else {
       // Default navigation behavior if no handler provided
       const config = getConfig();
-      const baseUrl = config.BASE_URL || config.LMS_BASE_URL || window.location.origin;
+      const lmsBaseUrl = config.LMS_BASE_URL || window.location.origin;
+      const learningBaseUrl = config.LEARNING_BASE_URL || lmsBaseUrl;
+      const learnerDashboardUrl = config.LEARNER_DASHBOARD_URL || `${lmsBaseUrl}/dashboard`;
+      const accountProfileUrl = config.ACCOUNT_PROFILE_URL || `${lmsBaseUrl}/account`;
       
       switch (tab) {
         case 'home':
-          window.location.href = `${baseUrl}/dashboard`;
+          // Home should go to learner dashboard
+          window.location.href = learnerDashboardUrl;
           break;
         case 'category':
-          // Default: redirect to learner dashboard
-          window.location.href = `${baseUrl}/learner-dashboard`;
+          // Category/courses - redirect to learner dashboard MFE
+          window.location.href = learnerDashboardUrl;
           break;
         case 'learning':
-          window.location.href = `${baseUrl}/learning`;
+          // Learning - redirect to learning MFE
+          window.location.href = learningBaseUrl;
           break;
         case 'personalize':
-          window.location.href = `${baseUrl}/personalize`;
+          // Personalize - redirect to learner dashboard with personalized tab
+          window.location.href = `${learnerDashboardUrl}?tab=personalized`;
           break;
         default:
           break;

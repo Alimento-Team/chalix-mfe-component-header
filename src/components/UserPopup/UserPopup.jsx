@@ -12,6 +12,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { getConfig } from '@edx/frontend-platform';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faBook,
@@ -69,42 +70,64 @@ const UserPopup = ({
   // Don't show loading spinner in the popup since data is pre-fetched
   // If still loading, show the popup with whatever data we have
 
+  // Get MFE URLs from config
+  const config = getConfig();
+  const lmsBaseUrl = config.LMS_BASE_URL || (typeof window !== 'undefined' ? window.location.origin : '');
+  const learnerDashboardUrl = config.LEARNER_DASHBOARD_URL || `${lmsBaseUrl}/dashboard`;
+  const accountSettingsUrl = config.ACCOUNT_SETTINGS_URL || `${lmsBaseUrl}/account/settings`;
+  const accountProfileUrl = config.ACCOUNT_PROFILE_URL || lmsBaseUrl;
+  
+  // Construct profile URL with username
+  const profileUrl = username && accountProfileUrl 
+    ? `${accountProfileUrl}/u/${username}` 
+    : accountProfileUrl || `${lmsBaseUrl}/account`;
+
+  const urls = {
+    courses: learnerDashboardUrl,
+    updateInfo: accountSettingsUrl,
+    profile: profileUrl,
+    requests: `${lmsBaseUrl}/requests`,
+    learningResults: `${lmsBaseUrl}/learning-results`,
+    registerTeaching: `${lmsBaseUrl}/register-teaching`,
+    help: `${lmsBaseUrl}/help`,
+  };
+
   const menuItems = [
     {
       id: 'courses',
       label: 'Khóa học',
       icon: faBook,
-      href: '/learner-dashboard',
+      href: urls.courses,
     },
     {
       id: 'update-info',
       label: 'Cập nhật thông tin',
       icon: faUser,
-      href: '/account/profile',
+      href: urls.updateInfo,
     },
     {
       id: 'requests',
       label: 'Danh sách yêu cầu',
       icon: faClipboardList,
-      href: '/requests',
+      href: urls.requests,
     },
     {
       id: 'learning-results',
       label: 'Kết quả học tập',
       icon: faChartBar,
-      href: '/learning-results',
+      href: urls.profile,
     },
     {
       id: 'register-teaching',
       label: 'Đăng ký giảng dạy',
       icon: faChalkboard,
-      href: '/register-teaching',
+      href: urls.registerTeaching,
     },
     {
       id: 'help',
       label: 'Trợ giúp',
       icon: faQuestionCircle,
-      href: '/help',
+      href: urls.help,
     },
   ];
 
