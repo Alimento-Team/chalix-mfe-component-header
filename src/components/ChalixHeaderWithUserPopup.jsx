@@ -123,26 +123,25 @@ const ChalixHeaderWithUserPopup = ({
     } else {
       // Default navigation behavior if no handler provided
       const config = getConfig();
-      const lmsBaseUrl = config.LMS_BASE_URL || window.location.origin;
-      const learningBaseUrl = config.LEARNING_BASE_URL || lmsBaseUrl;
-      const learnerDashboardUrl = config.LEARNER_DASHBOARD_URL || `${lmsBaseUrl}/dashboard`;
-      const accountProfileUrl = config.ACCOUNT_PROFILE_URL || `${lmsBaseUrl}/account`;
+      const lmsBaseUrl = config.LMS_BASE_URL;
+      const mfeBaseUrl = config.BASE_URL;
+      const learnerDashboardUrl = `${mfeBaseUrl}/learner-dashboard`;
       
       switch (tab) {
         case 'home':
-          // Home should go to learner dashboard
-          window.location.href = learnerDashboardUrl;
+          // Trang chủ - go to LMS home
+          window.location.href = lmsBaseUrl;
           break;
         case 'category':
-          // Category/courses - redirect to learner dashboard MFE
+          // Danh mục - go to learner dashboard MFE
           window.location.href = learnerDashboardUrl;
           break;
         case 'learning':
-          // Learning - redirect to learning MFE
-          window.location.href = learningBaseUrl;
+          // Học tập - go to LMS home
+          window.location.href = lmsBaseUrl;
           break;
         case 'personalize':
-          // Personalize - redirect to learner dashboard with personalized tab
+          // Cá nhân hóa - learner dashboard with personalized tab
           window.location.href = `${learnerDashboardUrl}?tab=personalized`;
           break;
         default:
