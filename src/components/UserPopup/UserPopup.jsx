@@ -86,10 +86,16 @@ const UserPopup = ({
     ? `${accountMfeUrl}/u/${username}` 
     : `${accountMfeUrl}/account`;
 
+  // Parse learnerDashboardUrl to add query params correctly
+  const personalizationUrl = learnerDashboardUrl.includes('?')
+    ? `${learnerDashboardUrl}&tab=personalized`
+    : `${learnerDashboardUrl}?tab=personalized`;
+
   const urls = {
     courses: learnerDashboardUrl,
     updateInfo: accountSettingsUrl,
     profile: profileUrl,
+    personalization: personalizationUrl,
     requests: `${lmsBaseUrl}/requests`,
     learningResults: `${lmsBaseUrl}/learning-results`,
     registerTeaching: `${lmsBaseUrl}/register-teaching`,
@@ -113,7 +119,7 @@ const UserPopup = ({
       id: 'personalization',
       label: 'Cá nhân hóa',
       icon: faUser,
-      href: urls.profile,
+      href: urls.personalization,
     },
     {
       id: 'requests',
