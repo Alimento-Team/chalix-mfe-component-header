@@ -87,9 +87,15 @@ const UserPopup = ({
     : `${accountMfeUrl}/account`;
 
   // Parse learnerDashboardUrl to add query params correctly
-  const personalizationUrl = learnerDashboardUrl.includes('?')
-    ? `${learnerDashboardUrl}&tab=personalized`
-    : `${learnerDashboardUrl}?tab=personalized`;
+  // Only construct full URL if not already on learner dashboard
+  const isOnLearnerDashboard = typeof window !== 'undefined' && window.location.pathname.includes('/learner-dashboard');
+  const personalizationUrl = isOnLearnerDashboard
+    ? `${window.location.origin}${window.location.pathname.replace(/\/$/, '')}/?tab=personalized`
+    : (learnerDashboardUrl.includes('?')
+      ? `${learnerDashboardUrl}&tab=personalized`
+      : (learnerDashboardUrl.endsWith('/')
+        ? `${learnerDashboardUrl}?tab=personalized`
+        : `${learnerDashboardUrl}/?tab=personalized`));
 
   const urls = {
     courses: learnerDashboardUrl,

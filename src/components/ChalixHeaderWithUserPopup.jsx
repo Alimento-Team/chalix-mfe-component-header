@@ -142,7 +142,18 @@ const ChalixHeaderWithUserPopup = ({
           break;
         case 'personalize':
           // Cá nhân hóa - learner dashboard with personalized tab
-          window.location.href = `${learnerDashboardUrl}?tab=personalized`;
+          // Use relative path if already on learner dashboard, otherwise use full URL
+          if (window.location.pathname.includes('/learner-dashboard')) {
+            // Ensure we build a URL with a single trailing slash followed by the query
+            const basePath = window.location.pathname.replace(/\/$/, '');
+            window.location.href = `${window.location.origin}${basePath}/?tab=personalized`;
+          } else {
+            // Make sure learnerDashboardUrl ends with exactly one slash before the query
+            const dashboardUrl = learnerDashboardUrl.endsWith('/')
+              ? learnerDashboardUrl
+              : `${learnerDashboardUrl}/`;
+            window.location.href = `${dashboardUrl}?tab=personalized`;
+          }
           break;
         default:
           break;
