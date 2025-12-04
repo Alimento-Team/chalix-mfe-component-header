@@ -96,6 +96,7 @@ const useUserPopup = (options = {}) => {
           profile_image_url: profileImageUrl,
           is_staff: response.data.is_staff || false,
           is_superuser: response.data.is_superuser || false,
+          organization: response.data.organization || '',
         };
         setUserData(normalizedData);
       } else {
@@ -116,6 +117,7 @@ const useUserPopup = (options = {}) => {
             profile_image_url: '',
             is_staff: false,
             is_superuser: false,
+            organization: '',
           });
         }
       } catch (configErr) {
