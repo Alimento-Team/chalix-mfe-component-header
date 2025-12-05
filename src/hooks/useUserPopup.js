@@ -98,6 +98,11 @@ const useUserPopup = (options = {}) => {
           is_superuser: response.data.is_superuser || false,
           organization: response.data.organization || '',
         };
+        console.log('[ChalixHeader] User popup data received:', {
+          username: normalizedData.username,
+          organization: normalizedData.organization,
+          raw_organization: response.data.organization,
+        });
         setUserData(normalizedData);
       } else {
         throw lastError || new Error('No user data available');

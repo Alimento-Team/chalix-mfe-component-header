@@ -97,7 +97,13 @@ const ChalixHeaderWithUserPopup = ({
     if (organizationName) return organizationName;
     
     // Use organization from user profile if available
-    return userPopup.userData?.organization || '';
+    const orgName = userPopup.userData?.organization || '';
+    console.log('[ChalixHeader] Organization name for display:', {
+      orgName,
+      userData: userPopup.userData,
+      organizationProp: organizationName,
+    });
+    return orgName;
   };
 
   const handleMenuItemClick = (item) => {
