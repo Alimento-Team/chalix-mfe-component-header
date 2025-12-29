@@ -197,6 +197,14 @@ const ChalixHeaderWithUserPopup = ({
           <div className="header-actions">
             {!hideUserMenu && (
               <>
+                {/* Display User Name - Organization */}
+                {userPopup.userData && (
+                  <span className="header-actions__user-info">
+                    {userPopup.userData.full_name || userPopup.userData.username}
+                    {userPopup.userData.organization && ` - ${userPopup.userData.organization}`}
+                  </span>
+                )}
+                
                 <div className="header-actions__notification-container">
                   <button 
                     className="header-actions__notification"
@@ -229,9 +237,6 @@ const ChalixHeaderWithUserPopup = ({
                     onClick={userPopup.togglePopup}
                     aria-label="User menu"
                   >
-                    <span className="user-dropdown-button__name">
-                      {userPopup.userData?.username?.toUpperCase() || 'USER'}
-                    </span>
                     <UserAvatarButton
                       userData={userPopup.userData}
                       onClick={(e) => {
