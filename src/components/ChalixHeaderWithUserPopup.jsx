@@ -5,6 +5,7 @@
  * Features:
  * - Top blue section with organization title and user menu
  * - Bottom navigation with tabs (Home, Category, Learning, Personalize) and search
+ * - Responsive design that adapts to mobile, tablet, and desktop screens
  * 
  * Usage:
  * <ChalixHeaderWithUserPopup 
@@ -30,6 +31,7 @@ import UserPopup from './UserPopup/UserPopup';
 import NotificationPopup from './NotificationPopup/NotificationPopup';
 import useUserPopup from '../hooks/useUserPopup';
 import useNotifications from '../hooks/useNotifications';
+import { useResponsive } from '../hooks/useMediaQuery';
 import './ChalixHeaderWithUserPopup.scss';
 
 /**
@@ -82,6 +84,9 @@ const ChalixHeaderWithUserPopup = ({
   onNavigate = null,
   hideUserMenu = false,
 }) => {
+  // Detect screen size for responsive behavior
+  const responsive = useResponsive();
+
   const userPopup = useUserPopup({
     baseApiUrl,
     logoutUrl,

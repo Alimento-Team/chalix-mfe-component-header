@@ -376,6 +376,9 @@ $search-border: #d1d5db;
 /**
  * Responsive design
  */
+/**
+ * Responsive design - Tablet (max-width: 1024px)
+ */
 @media (max-width: 1024px) {
     .chalix-header-vietnamese {
 
@@ -401,6 +404,9 @@ $search-border: #d1d5db;
     }
 }
 
+/**
+ * Responsive design - Mobile Landscape (max-width: 768px)
+ */
 @media (max-width: 768px) {
     .chalix-header-vietnamese {
         &__top {
@@ -413,6 +419,7 @@ $search-border: #d1d5db;
 
         &__top-content {
             gap: 12px;
+            flex-wrap: wrap;
         }
 
         &__bottom-content {
@@ -422,30 +429,50 @@ $search-border: #d1d5db;
     }
 
     .organization-info {
+        flex: 1 1 100%;
+        min-width: 0;
+
         &__title {
             font-size: 13px;
+            word-break: break-word;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
         }
 
         &__subtitle {
             font-size: 11px;
             margin-top: 2px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
     }
 
     .header-actions {
+        flex: 1;
         gap: 8px;
+        justify-content: flex-end;
+        order: 2;
     }
 
     .user-dropdown-button {
         padding: 4px 8px 4px 12px;
+        min-width: auto;
 
         &__name {
             font-size: 13px;
+            max-width: 120px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
     }
 
     .main-navigation {
-        order: 2;
+        order: 3;
         width: 100%;
         justify-content: space-around;
         gap: 4px;
@@ -455,9 +482,11 @@ $search-border: #d1d5db;
         padding: 8px 12px;
         flex: 1;
         justify-content: center;
+        min-width: 0;
 
         &__label {
             font-size: 12px;
+            white-space: nowrap;
         }
 
         &__icon {
@@ -468,75 +497,9 @@ $search-border: #d1d5db;
     .search-container {
         order: 1;
         flex: 1;
-        min-width: 0;
+        min-width: 150px;
         max-width: none;
-    }
-
-    .user-avatar-button {
-        width: 36px;
-        height: 36px;
-        font-size: 16px;
-
-        &__icon {
-            width: 16px;
-            height: 16px;
-        }
-    }
-}
-
-@media (max-width: 480px) {
-    .chalix-header-vietnamese {
-        &__top {
-            padding: 8px;
-        }
-
-        &__bottom {
-            padding: 4px 8px;
-        }
-    }
-
-    .organization-info {
-        &__title {
-            font-size: 11px;
-        }
-
-        &__subtitle {
-            font-size: 10px;
-        }
-    }
-
-    .nav-item {
-        flex-direction: column;
-        padding: 6px 8px;
-        gap: 2px;
-
-        &__label {
-            font-size: 10px;
-        }
-
-        &__icon {
-            font-size: 14px;
-        }
-    }
-
-    .header-actions {
-        gap: 6px;
-
-        &__notification {
-            width: 32px;
-            height: 32px;
-            font-size: 14px;
-        }
-    }
-
-    .user-avatar-button {
-        width: 32px;
-        height: 32px;
-
-        &__icon {
-            width: 14px;
-            height: 14px;
-        }
+        margin-bottom: 8px;
     }
 
     .search-bar {
@@ -549,6 +512,179 @@ $search-border: #d1d5db;
             width: 38px;
             height: 38px;
             font-size: 14px;
+        }
+    }
+
+    .user-avatar-button {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+
+        &__icon {
+            width: 16px;
+            height: 16px;
+        }
+
+        &__spinner {
+            width: 14px;
+            height: 14px;
+        }
+    }
+
+    .header-actions__notification-badge {
+        min-width: 18px;
+        height: 18px;
+        font-size: 10px;
+        padding: 0 4px;
+    }
+}
+
+/**
+ * Responsive design - Mobile Portrait (max-width: 480px)
+ */
+@media (max-width: 480px) {
+    .chalix-header-vietnamese {
+        &__top {
+            padding: 8px;
+        }
+
+        &__bottom {
+            padding: 4px 8px;
+        }
+
+        &__top-content {
+            gap: 8px;
+        }
+
+        &__bottom-content {
+            gap: 8px;
+        }
+    }
+
+    .organization-info {
+        flex: 1 1 100%;
+        order: 1;
+
+        &__title {
+            font-size: 11px;
+            line-height: 1.2;
+            -webkit-line-clamp: 2;
+            margin: 0;
+        }
+
+        &__subtitle {
+            font-size: 9px;
+            margin-top: 1px;
+            display: none; // Hide subtitle on very small screens to save space
+        }
+    }
+
+    .header-actions {
+        order: 2;
+        flex: 1;
+        gap: 4px;
+        justify-content: flex-end;
+        min-width: 0;
+
+        &__user-info {
+            display: none; // Hide user info text on very small screens
+        }
+
+        &__notification {
+            width: 32px;
+            height: 32px;
+            font-size: 14px;
+            padding: 0;
+            flex-shrink: 0;
+        }
+
+        &__notification-badge {
+            min-width: 16px;
+            height: 16px;
+            font-size: 9px;
+            padding: 0 3px;
+            top: -6px;
+            right: -6px;
+        }
+    }
+
+    .user-avatar-button {
+        width: 32px;
+        height: 32px;
+        flex-shrink: 0;
+        padding: 0;
+
+        &__icon {
+            width: 14px;
+            height: 14px;
+        }
+
+        &__spinner {
+            width: 12px;
+            height: 12px;
+        }
+    }
+
+    .user-dropdown-button {
+        padding: 2px 6px 2px 8px;
+        gap: 4px;
+        min-width: auto;
+        max-width: 90px;
+
+        &__name {
+            font-size: 11px;
+            max-width: 50px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    }
+
+    .main-navigation {
+        order: 3;
+        width: 100%;
+        justify-content: space-around;
+        gap: 2px;
+    }
+
+    .nav-item {
+        flex-direction: column;
+        padding: 4px 6px;
+        gap: 2px;
+        min-width: 0;
+        flex: 1;
+
+        &__label {
+            font-size: 9px;
+            white-space: nowrap;
+            line-height: 1;
+        }
+
+        &__icon {
+            font-size: 13px;
+        }
+    }
+
+    .search-container {
+        order: 4;
+        width: 100%;
+        min-width: auto;
+        max-width: none;
+        margin-top: 4px;
+    }
+
+    .search-bar {
+        height: 36px;
+
+        &__input {
+            padding: 6px 8px;
+            font-size: 12px;
+        }
+
+        &__button {
+            width: 36px;
+            height: 36px;
+            font-size: 12px;
         }
     }
 }
