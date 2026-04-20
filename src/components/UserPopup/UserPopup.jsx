@@ -79,7 +79,8 @@ const UserPopup = ({
   
   // ACCOUNT_PROFILE_URL is already a full URL base
   const accountMfeUrl = config.ACCOUNT_PROFILE_URL || `${lmsBaseUrl}`;
-  const accountSettingsUrl = `${accountMfeUrl}/account`;
+  // Use ACCOUNT_SETTINGS_URL if configured, otherwise fall back to the LMS native account settings page
+  const accountSettingsUrl = config.ACCOUNT_SETTINGS_URL || `${lmsBaseUrl}/account/settings`;
   
   // Construct profile URL with username
   const profileUrl = username 

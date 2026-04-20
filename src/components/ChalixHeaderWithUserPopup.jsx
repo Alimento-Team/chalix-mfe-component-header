@@ -14,9 +14,10 @@
  * />
  */
 
-import React from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { getConfig } from '@edx/frontend-platform';
+import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faUser, 
@@ -86,6 +87,84 @@ const ChalixHeaderWithUserPopup = ({
 }) => {
   // Detect screen size for responsive behavior
   const responsive = useResponsive();
+
+  // Search state
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [showSearchDropdown, setShowSearchDropdown] = useState(false);
+  const [searchLoading, setSearchLoading] = useState(false);
+  const searchContainerRef = useRef(null);
+  const searchDebounceRef = useRef(null);
+
+  // Fetch search results from backend API
+  const fetchSearchResults = useCallback(async (query) => {
+    if (!query || query.length < 2) {
+      setSearchResults([]);
+      setShowSearchDropdown(false);
+      return;
+    }
+    setSearchLoading(true);
+    try {
+      const config = getConfig();
+      const lmsBase = config.LMS_BASE_URL || window.location.origin;
+      const client = getAuthenticatedHttpClient();
+      const response = await client.get(
+        `${lmsBase}/course/api/search/?q=${encodeURIComponent(query)}&limit=10`,
+      );
+      const results = response.data?.results || [];
+      setSearchResults(results);
+      setShowSearchDropdown(results.length > 0);
+    } catch {
+      setSearchResults([]);
+      setShowSearchDropdown(false);
+    } finally {
+      setSearchLoading(false);
+    }
+  }, []);
+
+  // Debounce search input
+  useEffect(() => {
+    if (searchDebounceRef.current) clearTimeout(searchDebounceRef.current);
+    if (!searchQuery) {
+      setSearchResults([]);
+      setShowSearchDropdown(false);
+      return;
+    }
+    searchDebounceRef.current = setTimeout(() => {
+      fetchSearchResults(searchQuery);
+    }, 300);
+    return () => clearTimeout(searchDebounceRef.current);
+  }, [searchQuery, fetchSearchResults]);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (searchContainerRef.current && !searchContainerRef.current.contains(e.target)) {
+        setShowSearchDropdown(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleSearchResultClick = (result) => {
+    const config = getConfig();
+    const learningBase = (config.LEARNING_BASE_URL || config.LMS_BASE_URL || window.location.origin).replace(/\/$/, '');
+    const courseUrl = result.id
+      ? `${learningBase}/learning/course/${result.id}`
+      : result.course_url;
+    window.open(courseUrl, '_blank', 'noopener,noreferrer');
+    setShowSearchDropdown(false);
+    setSearchQuery('');
+  };
+
+  const handleSearchKeyDown = (e) => {
+    if (e.key === 'Escape') {
+      setShowSearchDropdown(false);
+    } else if (e.key === 'Enter') {
+      fetchSearchResults(searchQuery);
+    }
+  };
 
   const userPopup = useUserPopup({
     baseApiUrl,
@@ -312,18 +391,48 @@ const ChalixHeaderWithUserPopup = ({
             </button>
           </nav>
 
-          <div className="search-container">
+          <div className="search-container" ref={searchContainerRef}>
             <div className="search-bar">
               <input
                 type="text"
                 className="search-bar__input"
                 placeholder={searchPlaceholder}
                 aria-label="Tìm kiếm"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={handleSearchKeyDown}
+                onFocus={() => searchResults.length > 0 && setShowSearchDropdown(true)}
+                autoComplete="off"
               />
-              <button className="search-bar__button" aria-label="Tìm kiếm">
-                <FontAwesomeIcon icon={faSearch} />
+              <button
+                className="search-bar__button"
+                aria-label="Tìm kiếm"
+                onClick={() => fetchSearchResults(searchQuery)}
+                type="button"
+              >
+                {searchLoading
+                  ? <span className="search-bar__spinner" />
+                  : <FontAwesomeIcon icon={faSearch} />}
               </button>
             </div>
+            {showSearchDropdown && (
+              <div className="search-dropdown" role="listbox">
+                {searchResults.map((result) => (
+                  <button
+                    key={result.id}
+                    type="button"
+                    className="search-dropdown__item"
+                    role="option"
+                    onClick={() => handleSearchResultClick(result)}
+                  >
+                    <span className="search-dropdown__item-name">{result.display_name}</span>
+                    {result.org && (
+                      <span className="search-dropdown__item-org">{result.org}</span>
+                    )}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>
