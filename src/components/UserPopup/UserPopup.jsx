@@ -74,9 +74,12 @@ const UserPopup = ({
   const config = getConfig();
   const lmsBaseUrl = config.LMS_BASE_URL || (typeof window !== 'undefined' ? window.location.origin : '');
   
-  // LEARNER_DASHBOARD_URL is already a full URL, don't append to it
-  const learnerDashboardUrl = config.LEARNER_DASHBOARD_URL || `${lmsBaseUrl}/dashboard`;
-  
+// Ensure LEARNER_DASHBOARD_URL is always an absolute URL (config may omit the protocol)
+  const rawDashboardUrl = config.LEARNER_DASHBOARD_URL || `${lmsBaseUrl}/dashboard`;
+  const learnerDashboardUrl = rawDashboardUrl.startsWith('http')
+    ? rawDashboardUrl
+    : `https://${rawDashboardUrl}`;
+
   // ACCOUNT_PROFILE_URL is already a full URL base
   const accountMfeUrl = config.ACCOUNT_PROFILE_URL || `${lmsBaseUrl}`;
   // Use ACCOUNT_SETTINGS_URL if configured, otherwise fall back to the LMS native account settings page
@@ -87,16 +90,10 @@ const UserPopup = ({
     ? `${accountMfeUrl}/u/${username}` 
     : `${accountMfeUrl}/account`;
 
-  // Parse learnerDashboardUrl to add query params correctly
-  // Only construct full URL if not already on learner dashboard
-  const isOnLearnerDashboard = typeof window !== 'undefined' && window.location.pathname.includes('/learner-dashboard');
-  const personalizationUrl = isOnLearnerDashboard
-    ? `${window.location.origin}${window.location.pathname.replace(/\/$/, '')}/?tab=personalized`
-    : (learnerDashboardUrl.includes('?')
-      ? `${learnerDashboardUrl}&tab=personalized`
-      : (learnerDashboardUrl.endsWith('/')
-        ? `${learnerDashboardUrl}?tab=personalized`
-        : `${learnerDashboardUrl}/?tab=personalized`));
+  // Build personalization URL — always use the absolute learnerDashboardUrl
+  const personalizationUrl = learnerDashboardUrl.includes('?')
+    ? `${learnerDashboardUrl}&tab=personalized`
+    : `${learnerDashboardUrl.replace(/\/?$/, '')}/?tab=personalized`;
 
   const urls = {
     courses: learnerDashboardUrl,

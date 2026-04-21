@@ -214,8 +214,11 @@ const ChalixHeaderWithUserPopup = ({
       // Default navigation behavior if no handler provided
       const config = getConfig();
       const lmsBaseUrl = config.LMS_BASE_URL;
-      // LEARNER_DASHBOARD_URL is already a full URL
-      const learnerDashboardUrl = config.LEARNER_DASHBOARD_URL || `${lmsBaseUrl}/dashboard`;
+      // Ensure LEARNER_DASHBOARD_URL is always absolute (config may omit the protocol)
+      const rawDashboardUrl = config.LEARNER_DASHBOARD_URL || `${lmsBaseUrl}/dashboard`;
+      const learnerDashboardUrl = rawDashboardUrl.startsWith('http')
+        ? rawDashboardUrl
+        : `https://${rawDashboardUrl}`;
       
       switch (tab) {
         case 'home':
@@ -232,18 +235,7 @@ const ChalixHeaderWithUserPopup = ({
           break;
         case 'personalize':
           // Cá nhân hóa - learner dashboard with personalized tab
-          // Use relative path if already on learner dashboard, otherwise use full URL
-          if (window.location.pathname.includes('/learner-dashboard')) {
-            // Ensure we build a URL with a single trailing slash followed by the query
-            const basePath = window.location.pathname.replace(/\/$/, '');
-            window.location.href = `${window.location.origin}${basePath}/?tab=personalized`;
-          } else {
-            // Make sure learnerDashboardUrl ends with exactly one slash before the query
-            const dashboardUrl = learnerDashboardUrl.endsWith('/')
-              ? learnerDashboardUrl
-              : `${learnerDashboardUrl}/`;
-            window.location.href = `${dashboardUrl}?tab=personalized`;
-          }
+          window.location.href = `${learnerDashboardUrl.replace(/\/?$/, '')}/?tab=personalized`;
           break;
         default:
           break;
