@@ -161,9 +161,11 @@ const useUserPopup = (options = {}) => {
     try {
       const client = getAuthenticatedHttpClient();
       const config = getConfig();
+      const localLogoutUrl = '/logout';
       
       // Try to call logout endpoint
       const logoutEndpoints = [
+        localLogoutUrl,
         `${baseApiUrl}/accounts/deactivate_logout/`,
         `${config.LMS_BASE_URL}/logout`,
         logoutUrl,
@@ -179,16 +181,17 @@ const useUserPopup = (options = {}) => {
         }
       }
 
-      // Redirect to configured logout URL or fallback
-      const finalLogoutUrl = config.FRONTEND_LOGOUT_URL || 
+      // Redirect to local logout first so current-domain session is always cleared.
+      const finalLogoutUrl = localLogoutUrl ||
+                            config.FRONTEND_LOGOUT_URL || 
                             config.LOGOUT_URL || 
                             logoutUrl || 
                             '/logout';
       window.location.href = finalLogoutUrl;
     } catch (err) {
       console.error('Error during logout:', err);
-      // Still redirect on error
-      window.location.href = logoutUrl || '/logout';
+      // Still redirect on error and prefer local session cleanup.
+      window.location.href = '/logout';
     }
   }, [baseApiUrl, logoutUrl]);
 
