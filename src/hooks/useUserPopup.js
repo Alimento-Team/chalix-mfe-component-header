@@ -161,15 +161,16 @@ const useUserPopup = (options = {}) => {
     try {
       const client = getAuthenticatedHttpClient();
       const config = getConfig();
-      const localLogoutUrl = '/logout';
-      
-      // Try to call logout endpoint
+      const localLogoutUrl = '/logout/';
+      const explicitLogoutUrl = logoutUrl || config.FRONTEND_LOGOUT_URL || config.LOGOUT_URL || '';
+
+      // Best-effort POST only to endpoints that might actually clear the current service session.
       const logoutEndpoints = [
+        explicitLogoutUrl,
         localLogoutUrl,
         `${baseApiUrl}/accounts/deactivate_logout/`,
-        `${config.LMS_BASE_URL}/logout`,
-        logoutUrl,
-      ];
+        config.LMS_BASE_URL ? `${config.LMS_BASE_URL.replace(/\/$/, '')}/logout/` : '',
+      ].filter(Boolean);
 
       for (const endpoint of logoutEndpoints) {
         try {
@@ -181,17 +182,12 @@ const useUserPopup = (options = {}) => {
         }
       }
 
-      // Redirect to local logout first so current-domain session is always cleared.
-      const finalLogoutUrl = localLogoutUrl ||
-                            config.FRONTEND_LOGOUT_URL || 
-                            config.LOGOUT_URL || 
-                            logoutUrl || 
-                            '/logout';
+      const finalLogoutUrl = explicitLogoutUrl || localLogoutUrl;
       window.location.href = finalLogoutUrl;
     } catch (err) {
       console.error('Error during logout:', err);
-      // Still redirect on error and prefer local session cleanup.
-      window.location.href = '/logout';
+      const config = getConfig();
+      window.location.href = logoutUrl || config.FRONTEND_LOGOUT_URL || config.LOGOUT_URL || '/logout/';
     }
   }, [baseApiUrl, logoutUrl]);
 
