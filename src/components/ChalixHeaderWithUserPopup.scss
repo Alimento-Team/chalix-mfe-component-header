@@ -650,6 +650,14 @@ $search-border: #d1d5db;
         justify-content: flex-end;
         min-width: 0;
 
+        // Remove position:relative so the UserPopup walks up to the sticky header
+        // (.chalix-header-vietnamese, width:100%) as its containing block.
+        // This ensures popup right:8px is relative to the full-viewport-width
+        // header, so the popup never overflows off-screen.
+        &__user {
+            position: static;
+        }
+
         &__user-info {
             display: none; // Hide user info text on very small screens
         }

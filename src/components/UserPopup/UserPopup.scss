@@ -192,14 +192,19 @@ $logout-hover-bg: rgba(220, 53, 69, 0.05);
 }
 
 /**
- * Responsive adjustments for smaller screens
+ * Responsive adjustments for smaller screens.
+ *
+ * On mobile the popup's positioned ancestor (.header-actions__user) is
+ * overridden to position:static so the popup walks up to the sticky header
+ * (.chalix-header-vietnamese, width:100%).  `right: 8px` is then relative
+ * to the full-viewport-width header, keeping the popup safely on-screen.
  */
-@media (max-width: 480px) {
+@media (max-width: 768px) {
     .user-popup {
-        width: calc(100vw - 32px);
-        max-width: 280px;
-        right: auto;
-        left: 16px;
+        right: 8px;
+        left: auto;
+        width: calc(100vw - 16px);
+        max-width: 320px;
     }
 }
 
