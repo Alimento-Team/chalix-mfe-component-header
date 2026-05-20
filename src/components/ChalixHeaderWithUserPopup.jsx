@@ -150,9 +150,15 @@ const ChalixHeaderWithUserPopup = ({
   const handleSearchResultClick = (result) => {
     const config = getConfig();
     const learningBase = (config.LEARNING_BASE_URL || config.LMS_BASE_URL || window.location.origin).replace(/\/$/, '');
-    const courseUrl = result.id
+    const resolvedCourseUrl = result.id
       ? `${learningBase}/course/${result.id}`
       : result.course_url;
+    if (!resolvedCourseUrl) {
+      return;
+    }
+    const courseUrl = resolvedCourseUrl?.replace(/\/$/, '').endsWith('/home')
+      ? resolvedCourseUrl
+      : `${resolvedCourseUrl?.replace(/\/$/, '')}/home`;
     window.open(courseUrl, '_blank', 'noopener,noreferrer');
     setShowSearchDropdown(false);
     setSearchQuery('');

@@ -761,6 +761,40 @@ $search-border: #d1d5db;
     }
 }
 
+/*
+ * Mobile top-header hardening (additive-only):
+ * keep organization info and actions on the same row to avoid large vertical gaps.
+ */
+@media (max-width: 768px) {
+    .chalix-header-vietnamese__top-content {
+        flex-wrap: nowrap;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .organization-info {
+        flex: 1 1 auto;
+        min-width: 0;
+        max-width: calc(100% - 120px);
+    }
+
+    .header-actions {
+        flex: 0 0 auto;
+        min-width: auto;
+        margin-left: auto;
+
+        &__user-info {
+            display: none;
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .organization-info {
+        max-width: calc(100% - 84px);
+    }
+}
+
 /**
  * Print styles
  */
