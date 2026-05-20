@@ -162,14 +162,18 @@ const useUserPopup = (options = {}) => {
       const client = getAuthenticatedHttpClient();
       const config = getConfig();
       const localLogoutUrl = '/logout/';
-      const explicitLogoutUrl = logoutUrl || config.FRONTEND_LOGOUT_URL || config.LOGOUT_URL || '';
+      const configuredLogoutUrl = logoutUrl || config.FRONTEND_LOGOUT_URL || config.LOGOUT_URL || '';
+      const lmsLogoutUrl = config.LMS_BASE_URL ? `${config.LMS_BASE_URL.replace(/\/$/, '')}/logout/` : '';
+      const explicitLogoutUrl = configuredLogoutUrl.startsWith('http')
+        ? configuredLogoutUrl
+        : (lmsLogoutUrl || configuredLogoutUrl || '');
 
       // Best-effort POST only to endpoints that might actually clear the current service session.
       const logoutEndpoints = [
-        explicitLogoutUrl,
+        configuredLogoutUrl,
         localLogoutUrl,
         `${baseApiUrl}/accounts/deactivate_logout/`,
-        config.LMS_BASE_URL ? `${config.LMS_BASE_URL.replace(/\/$/, '')}/logout/` : '',
+        lmsLogoutUrl,
       ].filter(Boolean);
 
       for (const endpoint of logoutEndpoints) {
@@ -187,7 +191,12 @@ const useUserPopup = (options = {}) => {
     } catch (err) {
       console.error('Error during logout:', err);
       const config = getConfig();
-      window.location.href = logoutUrl || config.FRONTEND_LOGOUT_URL || config.LOGOUT_URL || '/logout/';
+      const configuredLogoutUrl = logoutUrl || config.FRONTEND_LOGOUT_URL || config.LOGOUT_URL || '';
+      const lmsLogoutUrl = config.LMS_BASE_URL ? `${config.LMS_BASE_URL.replace(/\/$/, '')}/logout/` : '';
+      const fallbackLogoutUrl = configuredLogoutUrl.startsWith('http')
+        ? configuredLogoutUrl
+        : (lmsLogoutUrl || configuredLogoutUrl || '/logout/');
+      window.location.href = fallbackLogoutUrl;
     }
   }, [baseApiUrl, logoutUrl]);
 
