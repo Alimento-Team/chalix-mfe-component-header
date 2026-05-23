@@ -161,9 +161,9 @@ const useUserPopup = (options = {}) => {
     try {
       const client = getAuthenticatedHttpClient();
       const config = getConfig();
-      const localLogoutUrl = '/logout/';
-      const configuredLogoutUrl = logoutUrl || config.FRONTEND_LOGOUT_URL || config.LOGOUT_URL || '';
-      const lmsLogoutUrl = config.LMS_BASE_URL ? `${config.LMS_BASE_URL.replace(/\/$/, '')}/logout/` : '';
+      const localLogoutUrl = '/logout';
+      const configuredLogoutUrl = (logoutUrl || config.FRONTEND_LOGOUT_URL || config.LOGOUT_URL || '').replace(/\/$/, '');
+      const lmsLogoutUrl = config.LMS_BASE_URL ? `${config.LMS_BASE_URL.replace(/\/$/, '')}/logout` : '';
       const explicitLogoutUrl = configuredLogoutUrl.startsWith('http')
         ? configuredLogoutUrl
         : (lmsLogoutUrl || configuredLogoutUrl || '');
@@ -191,11 +191,11 @@ const useUserPopup = (options = {}) => {
     } catch (err) {
       console.error('Error during logout:', err);
       const config = getConfig();
-      const configuredLogoutUrl = logoutUrl || config.FRONTEND_LOGOUT_URL || config.LOGOUT_URL || '';
-      const lmsLogoutUrl = config.LMS_BASE_URL ? `${config.LMS_BASE_URL.replace(/\/$/, '')}/logout/` : '';
+      const configuredLogoutUrl = (logoutUrl || config.FRONTEND_LOGOUT_URL || config.LOGOUT_URL || '').replace(/\/$/, '');
+      const lmsLogoutUrl = config.LMS_BASE_URL ? `${config.LMS_BASE_URL.replace(/\/$/, '')}/logout` : '';
       const fallbackLogoutUrl = configuredLogoutUrl.startsWith('http')
         ? configuredLogoutUrl
-        : (lmsLogoutUrl || configuredLogoutUrl || '/logout/');
+        : (lmsLogoutUrl || configuredLogoutUrl || '/logout');
       window.location.href = fallbackLogoutUrl;
     }
   }, [baseApiUrl, logoutUrl]);
