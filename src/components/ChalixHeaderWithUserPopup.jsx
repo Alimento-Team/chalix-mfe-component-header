@@ -197,8 +197,8 @@ const ChalixHeaderWithUserPopup = ({
   };
 
   const handleMenuItemClick = (item) => {
-    // If the menu item is "personalize", trigger the navigation handler
-    if (item.id === 'personalize' && onNavigate) {
+    // Route personalization clicks via shared nav handler so behavior matches top menu.
+    if ((item.id === 'personalize' || item.id === 'personalization') && onNavigate) {
       onNavigate('personalize');
     } else if (onUserMenuItemClick) {
       onUserMenuItemClick(item);

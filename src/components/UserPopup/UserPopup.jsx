@@ -90,10 +90,18 @@ const UserPopup = ({
     ? `${accountMfeUrl}/u/${username}` 
     : `${accountMfeUrl}/account`;
 
-  // Build personalization URL — always use the absolute learnerDashboardUrl
-  const personalizationUrl = learnerDashboardUrl.includes('?')
-    ? `${learnerDashboardUrl}&tab=personalized`
-    : `${learnerDashboardUrl.replace(/\/?$/, '')}/?tab=personalized`;
+  // Build personalization URL by replacing any existing tab query.
+  const buildPersonalizationUrl = (dashboardUrl) => {
+    const [base, rawQuery = ''] = dashboardUrl.split('?');
+    const params = new URLSearchParams(rawQuery);
+    params.set('tab', 'personalized');
+    const queryString = params.toString();
+    return queryString
+      ? `${base.replace(/\/?$/, '')}/?${queryString}`
+      : `${base.replace(/\/?$/, '')}/?tab=personalized`;
+  };
+
+  const personalizationUrl = buildPersonalizationUrl(learnerDashboardUrl);
 
   const urls = {
     courses: learnerDashboardUrl,
