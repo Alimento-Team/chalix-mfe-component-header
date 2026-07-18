@@ -232,8 +232,8 @@ const ChalixHeaderWithUserPopup = ({
           window.location.href = lmsBaseUrl;
           break;
         case 'category':
-          // Danh mục - go to learner dashboard MFE
-          window.location.href = learnerDashboardUrl;
+          // Danh mục - learner dashboard with user guides tab
+          window.location.href = `${learnerDashboardUrl.replace(/\/?$/, '')}/?tab=user-guides`;
           break;
         case 'learning':
           // Học tập - go to LMS home
