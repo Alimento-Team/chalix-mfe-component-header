@@ -73,12 +73,23 @@ const UserPopup = ({
   // Get MFE URLs from config
   const config = getConfig();
   const lmsBaseUrl = config.LMS_BASE_URL || (typeof window !== 'undefined' ? window.location.origin : '');
-  
-// Ensure LEARNER_DASHBOARD_URL is always an absolute URL (config may omit the protocol)
-  const rawDashboardUrl = config.LEARNER_DASHBOARD_URL || `${lmsBaseUrl}/dashboard`;
-  const learnerDashboardUrl = rawDashboardUrl.startsWith('http')
-    ? rawDashboardUrl
-    : `https://${rawDashboardUrl}`;
+
+  // Resolve learner dashboard URL robustly:
+  // - use configured value when present (absolute or relative)
+  // - otherwise prefer current app host with /learner-dashboard
+  // - avoid falling back to LMS /dashboard which causes wrong routing in popup links
+  const resolveLearnerDashboardUrl = () => {
+    const fallbackBase = typeof window !== 'undefined' ? window.location.origin : lmsBaseUrl;
+    const rawDashboardUrl = config.LEARNER_DASHBOARD_URL;
+
+    if (rawDashboardUrl) {
+      return new URL(rawDashboardUrl, fallbackBase).toString().replace(/\/?$/, '');
+    }
+
+    return new URL('/learner-dashboard', fallbackBase).toString().replace(/\/?$/, '');
+  };
+
+  const learnerDashboardUrl = resolveLearnerDashboardUrl();
 
   // ACCOUNT_PROFILE_URL is already a full URL base
   const accountMfeUrl = config.ACCOUNT_PROFILE_URL || `${lmsBaseUrl}`;
